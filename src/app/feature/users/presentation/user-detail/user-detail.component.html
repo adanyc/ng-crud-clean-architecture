@@ -1,0 +1,26 @@
+<ng-template #loading>Loading user...</ng-template>
+
+<table *ngIf="user | async as user; else loading">
+  <tbody>
+    <tr>
+      <td>id</td>
+      <td>{{user.id}}</td>
+    </tr>
+    <tr>
+      <td>name</td>
+      <td>{{user.name}}</td>
+    </tr>
+    <tr>
+      <td>email</td>
+      <td>{{user.email}}</td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <button (click)="handleClickDelete()">Delete</button>
+        <button (click)="handleClickCancel()">Cancel</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+

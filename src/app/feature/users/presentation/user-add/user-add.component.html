@@ -1,0 +1,26 @@
+<form [formGroup]="form" autocomplete="off" (ngSubmit)="handleFormSubmit()">
+  <table>
+    <tbody>
+      <tr>
+        <td>name</td>
+        <td>
+          <input type="text" placeholder="Nombre" formControlName="name"><br/>
+          <span *ngIf="isValidField('name')">Ingrese un <strong>nombre</strong> válido</span>
+        </td>
+      </tr>
+      <tr>
+        <td>email</td>
+        <td>
+          <input type="email" placeholder="Correo" formControlName="email"><br/>
+          <span *ngIf="isValidField('email')">Ingrese un <strong>email</strong> válido</span>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <button type="submit">Create</button>
+          <button type="button" (click)="handleClickCancel()">Cancel</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</form>

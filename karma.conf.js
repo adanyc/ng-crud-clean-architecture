@@ -1,5 +1,5 @@
-// Karma configuration file, see link for more information
-// https://karma-runner.github.io/1.0/config/configuration-file.html
+process.env.CHROME_BIN = require('puppeteer').executablePath();
+const isDocker = require('is-docker')();
 
 module.exports = function (config) {
   config.set({
@@ -10,35 +10,57 @@ module.exports = function (config) {
       require('karma-chrome-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage'),
-      require('@angular-devkit/build-angular/plugins/karma')
+      require('@angular-devkit/build-angular/plugins/karma'),
+      require('karma-mocha-reporter'),
+      require('karma-junit-reporter'),
     ],
     client: {
-      jasmine: {
-        // you can add configuration options for Jasmine here
-        // the possible options are listed at https://jasmine.github.io/api/edge/Configuration.html
-        // for example, you can disable the random execution with `random: false`
-        // or set a specific seed with `seed: 4321`
-      },
-      clearContext: false // leave Jasmine Spec Runner output visible in browser
+      clearContext: false,
     },
     jasmineHtmlReporter: {
-      suppressAll: true // removes the duplicated traces
+      suppressAll: true,
     },
     coverageReporter: {
       dir: require('path').join(__dirname, './coverage/ng-crud-clean-architecture'),
       subdir: '.',
       reporters: [
         { type: 'html' },
-        { type: 'text-summary' }
-      ]
+        { type: 'text-summary' },
+        { type: 'lcovonly' },
+        { type: 'cobertura' },
+      ],
+      thresholds: {
+        emitWarning: true,
+        skipFilesWithNoCoverage: true,
+        global: {
+          statements: 70,
+          lines: 70,
+          branches: 70,
+          functions: 70,
+        },
+        each: {
+          statements: 70,
+          lines: 70,
+          branches: 70,
+          functions: 70,
+          overrides: {},
+        },
+      },
     },
-    reporters: ['progress', 'kjhtml'],
+    reporters: ['coverage', 'mocha', 'progress', 'kjhtml', 'junit'],
     port: 9876,
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['Chrome', 'ChromeHeadless'],
+    customLaunchers: {
+      HeadlessChrome: {
+        base: 'ChromeHeadless',
+        flags: isDocker ? ['--no-sandbox'] : [],
+      },
+    },
+    concurrency: Infinity,
     singleRun: false,
-    restartOnFileChange: true
+    restartOnFileChange: true,
   });
 };

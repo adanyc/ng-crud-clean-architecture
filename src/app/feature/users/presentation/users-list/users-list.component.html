@@ -1,0 +1,20 @@
+<ng-template #loading>Loading users...</ng-template>
+
+<table *ngIf="users | async as users; else loading">
+  <thead>
+    <td>id</td>
+    <td>name</td>
+    <td>email</td>
+    <td>edit</td>
+    <td>remove</td>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{user.id}}</td>
+      <td>{{user.name}}</td>
+      <td>{{user.email}}</td>
+      <td><a href="#" [routerLink]="['/users/user-edit', user.id]">edit</a></td>
+      <td><a href="#" [routerLink]="['/users/user-detail', user.id]">remove</a></td>
+    </tr>
+  </tbody>
+</table>
